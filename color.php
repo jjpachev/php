@@ -12,9 +12,9 @@ class Color
     $this->b = $b;
   }
 
-  function allocate($img)
+  function allocate($im)
   {
-    return imagecolorallocate($img, $this->r,
+    return imagecolorallocate($im, $this->r,
       $this->g, $this->b);
   }
 }
