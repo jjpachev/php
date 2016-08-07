@@ -1,5 +1,6 @@
 <?php
 require_once 'color.php';
+require_once 'gaps.php';
 
 class Graph
 {
@@ -12,6 +13,8 @@ class Graph
   var $x1,$y1;
   var $x2,$y2;
   var $margin;
+  var $vgaps;
+  var $hgaps;
 
   function Graph($w,$h)
   {
@@ -27,11 +30,16 @@ class Graph
     $this->y2 = $this->h - $this->margin;
     $this->nx = 30;
     $this->ny = 30;
+    $this->vgaps = [];
+    $this->hgaps = [];
+    
   }
   
   function create_image()
   {
-    return @imagecreate($this->w,$this->h);
+    $im = @imagecreate($this->w,$this->h);
+    $this->bgcolor->allocate($im);
+    return $im;
   }
 
   function draw($im)
@@ -54,6 +62,26 @@ class Graph
       imagefilledrectangle($im , $this->x1 ,$y , $this->x2 , $y + $this->th , $cl);
       $y += $space_y;
     }
+   }
+   
+   function add_hgap($pos, $start, $end)
+   {
+    if (! array_key_exists($pos, $this->hgaps))
+    {
+      $this->hgaps[$pos] = new Gaps();
+    }
+    
+    $this->hgaps[$pos]->add_gap($start,$end);
+   }
+   
+    function add_vgap($pos, $start, $end)
+   {
+    if (! array_key_exists($pos, $this->vgaps))
+    {
+      $this->vgaps[$pos] = new Gaps();
+    }
+    
+    $this->vgaps[$pos]->add_gap($start,$end);
    }
 }
 
